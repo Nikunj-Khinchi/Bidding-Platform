@@ -13,7 +13,7 @@ This is a comprehensive RESTful API for a real-time bidding platform built with 
 - Search, filtering, and pagination for auction items
 - Validation and error handling
 - Unit and integration tests
-- CI/CD pipeline with Docker
+- Containerization withDocker
 
 ## Installation
 
@@ -25,7 +25,7 @@ This is a comprehensive RESTful API for a real-time bidding platform built with 
 2. Install dependencies:
    `npm install`
 
-3. ### MySql Setup
+3.  MySql Setup
 
 - To create a database and use it, you need to have access to a MySQL server. You can use a local server or a remote one. Here are the steps to create a database:
 
@@ -36,7 +36,8 @@ This is a comprehensive RESTful API for a real-time bidding platform built with 
 - Log in with your MySQL root user credentials.
 
 - Create a new database with the CREATE DATABASE command. For example, if you want to create a database named mydatabase, you would run:
-  `CREATE DATABASE mydatabase;` , `use mydatabase`
+  `CREATE DATABASE mydatabase;` ,
+   `use mydatabase`
 
 - Update your .env file with the database name, user, password, and host
 
