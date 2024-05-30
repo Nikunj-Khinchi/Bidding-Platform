@@ -13,14 +13,14 @@ This is a comprehensive RESTful API for a real-time bidding platform built with 
 - Search, filtering, and pagination for auction items
 - Validation and error handling
 - Unit and integration tests
-- Containerization withDocker
+- Containerization with Docker
 
 ## Installation
 
 1. Clone the repository:
 
-`git clone https://github.com/Nikunj-Khinchi/Bidding-Platform`
-`cd Bidding-Platform`
+- `git clone https://github.com/Nikunj-Khinchi/Bidding-Platform`
+- `cd Bidding-Platform`
 
 2. Install dependencies:
    `npm install`
