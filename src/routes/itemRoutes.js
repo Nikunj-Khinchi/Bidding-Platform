@@ -10,6 +10,7 @@ const {
 const authMiddleware = require("../middleware/authMiddleware");
 const multer = require("multer");
 const { createRateLimiter } = require("../middleware/rateLimitMiddleware");
+const { roleCheckMiddleware } = require("../middleware/roleCheckMiddleware");
 // const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
@@ -53,6 +54,7 @@ router.post(
   createItem
 );
 router.put("/:id", authMiddleware, upload.single("file") ,updateItem);
-router.delete("/:id", authMiddleware, deleteItem);
+
+router.delete("/:id", authMiddleware, roleCheckMiddleware('admin'), deleteItem);
 
 module.exports = router;

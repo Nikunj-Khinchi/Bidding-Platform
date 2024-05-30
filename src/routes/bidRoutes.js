@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const { getBids, createBid, deleteBid } = require('../controllers/bidController');
 const authMiddleware = require('../middleware/authMiddleware');
 const { createRateLimiter } = require('../middleware/rateLimitMiddleware');
+const { roleCheckMiddleware } = require('../middleware/roleCheckMiddleware');
 const router = express.Router();
 
 // Apply rate limiting middleware
@@ -16,6 +17,8 @@ router.get('/:itemId/bids', getBids);
 router.post('/:itemId/bids', bidCreationLimiter, authMiddleware, [
     check('bid_amount').isDecimal(),
 ], createBid);
-router.delete('/:itemId/bids/:id', authMiddleware, deleteBid);
+
+
+router.delete('/:itemId/bids/:id',authMiddleware, roleCheckMiddleware('admin'), deleteBid);
 
 module.exports = router;
