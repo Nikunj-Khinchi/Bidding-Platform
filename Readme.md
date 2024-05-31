@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a comprehensive RESTful API for a real-time bidding platform built with Node.js, Express, Socket.io, and PostgreSQL.
+This is a comprehensive RESTful API for a real-time bidding platform built with Node.js, Express, Socket.io, and MYSQL.
 
 ## Features
 
@@ -14,6 +14,11 @@ This is a comprehensive RESTful API for a real-time bidding platform built with 
 - Validation and error handling
 - Unit and integration tests
 - Containerization with Docker
+
+## Code Quality
+
+This project uses [ESLint](https://eslint.org/) to maintain code quality and consistency. To run ESLint, use the following command: `npx eslint`
+
 
 ## Installation
 

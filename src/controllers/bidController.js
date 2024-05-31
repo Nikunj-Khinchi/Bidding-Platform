@@ -4,6 +4,7 @@ const Item = require("../models/item");
 const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const Notification = require("../models/notification");
+const io = require("../../index").io;
 
 exports.getBids = async (req, res) => {
   const { itemId } = req.params;
@@ -57,38 +58,29 @@ exports.createBid = async (req, res) => {
         .status(400)
         .json({ message: "Bid amount must be higher than the current price" });
     }
-    try{
+    try {
+      const bid = await Bid.create({
+        user_id: req.userId,
+        item_id: itemId,
+        bid_amount,
+      });
 
-    
-    const bid = await Bid.create({
-      user_id: req.userId,
-      item_id: itemId,
-      bid_amount,
-    });
+      item.current_price = bid_amount;
+      await item.save();
 
-    item.current_price = bid_amount;
-    await item.save();
+      // // Emit the event
+      // io.emit("update", { itemId, bidAmount: bid_amount, userId: req.userId });
 
-    const notification = await Notification.create({
-      user_id: req.userId,
-      message: `A new bid of ${bid_amount} has been placed on your item ${item.name}`,
-    });
+      const notification = await Notification.create({
+        user_id: req.userId,
+        message: `A new bid of ${bid_amount} has been placed on your item ${item.name}`,
+      });
 
-    // // Notify other bidders
-    // const notifications = await Notification.findAll({ where: { itemId } });
-    // notifications.forEach((notification) => {
-    //   notification.notify({
-    //     message: `New bid of ${bid_amount} on item ${item.name}`,
-    //     userId: notification.userId,
-    //   });
-    // });
-
-
-    res.status(201).json({ message: "Bid placed successfully", bid });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-
+ 
+      res.status(201).json({ message: "Bid placed successfully", bid });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

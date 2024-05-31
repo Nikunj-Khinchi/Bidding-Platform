@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Socket.IO Client</title>
+  <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+</head>
+
+<body>
+  <h1>Socket.IO Client</h1>
+
+  <form id="bidForm">
+    <label for="itemId">Item ID:</label><br>
+    <input type="text" id="itemId" name="itemId" value=""><br>
+    <label for="bidAmount">Bid Amount:</label><br>
+    <input type="text" id="bidAmount" name="bidAmount" value=""><br>
+    <label for="userId">User ID:</label><br>
+    <input type="text" id="userId" name="userId" value=""><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <p id="notification"></p>
+  <p id="error"></p>
+
+  <script>
+    const socket = io('http://localhost:3000');
+
+    document.getElementById('bidForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const itemId = document.getElementById('itemId').value;
+      const bidAmount = document.getElementById('bidAmount').value;
+      const userId = document.getElementById('userId').value;
+
+      socket.emit('bid', {
+        itemId,
+        bidAmount: parseFloat(bidAmount),
+        userId
+      }, (response) => {
+        console.log('Bid response:', response);
+
+        if (response.error) {
+          const errorElement = document.getElementById('error');
+          errorElement.textContent = 'Error: ' + response.error;
+        }
+
+        if (response.success) {
+          // The bid was successful, so emit the 'notify' event
+          socket.emit('notify', {
+            userId,
+            message: `New bid placed on item ${itemId} by User : ${userId} bid Amount is ${bidAmount}`
+          });
+        } else {
+          // The bid was not successful, so handle the error
+          console.error('Bid was not successful:', response.error);
+        }
+      });
+
+
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('update', (data) => {
+      console.log('Update received:', data);
+    });
+
+    socket.on('notification', (data) => {
+      console.log('Notification received:', data);
+
+      const notificationElement = document.getElementById('notification');
+      notificationElement.textContent = 'Notification: ' + data.message;
+    });
+
+    socket.on('error', (data) => {
+      console.log('Error received:', data.message);
+
+      const errorElement = document.getElementById('error');
+      errorElement.textContent = 'Error: ' + data.message;
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+  </script>
+</body>
+
+</html>

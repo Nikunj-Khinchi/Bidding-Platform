@@ -3,21 +3,27 @@ const socketIo = require('socket.io');
 const app = require('./src/app');
 const dotenv = require('dotenv');
 const sequelize = require("./src/config/database");
-
-// const { handleSocket } = require('./src/config/socket');
+const cors = require('cors');
+const { handleSocket } = require('./src/config/socket');
 dotenv.config();
 
-
+app.use(cors());
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+    cors: {
+        origin: '*',
+    }
+});
 
-// io.on('connection', (socket) => {
-//     console.log('New client connected');
-//     handleSocket(socket, io);
-//     socket.on('disconnect', () => {
-//         console.log('Client disconnected');
-//     });
-// });
+
+io.on('connection', (socket) => {
+    app.set('socket', socket);
+    console.log('New client connected');
+    handleSocket(socket, io);
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
 
 
 sequelize
@@ -30,8 +36,10 @@ sequelize
   });
 
 
-const PORT = 3001;
+const PORT = 3000;
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = { server, io };

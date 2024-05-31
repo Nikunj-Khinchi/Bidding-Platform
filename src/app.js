@@ -20,7 +20,7 @@ app.use("/notifications", notificationRoutes);
 
 app.use(errorMiddleware);
 
-console.log(new Date());
 
+console.log(new Date());
 
 module.exports = app;
