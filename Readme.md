@@ -147,7 +147,7 @@ sequelize
 1. **Generate a Migration File**
 
    ```bash
-   npx sequelize-cli migration:generate --name add-priority-to-notifications
+   npx sequelize-cli migration:generate --name add-isDeleted-to-notifications
    ```
 
    This creates a new migration file in the `migrations/` folder.
