@@ -25,9 +25,8 @@ io.on('connection', (socket) => {
     });
 });
 
-
 sequelize
-  .sync()
+  .sync({alter: true})
   .then(() => {
     console.log("Database synchronized");
   })

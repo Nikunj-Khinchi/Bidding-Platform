@@ -1,16 +1,16 @@
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { validationResult } = require('express-validator');
-const { registerValidation, loginValidation } = require('../utils/validator');
 const dotenv = require('dotenv');
-const { use } = require('../app');
+const process = require('process');
 
 dotenv.config();
 
 exports.register = async (req, res) => {
     const errors = validationResult(req);
     const { username, password, email , role } = req.body;
+    console.log(req.body);
  
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
         }
 
         // const isMatch = await bcrypt.compare(password, user.password);
-        if (password !== user.password) {
+        if (password != user.password ) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
@@ -100,3 +100,4 @@ exports.resetPassword = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+

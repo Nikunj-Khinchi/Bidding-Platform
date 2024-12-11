@@ -1,10 +1,8 @@
-const { use } = require("../app");
 const Bid = require("../models/bid");
 const Item = require("../models/item");
 const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const Notification = require("../models/notification");
-const io = require("../../index").io;
 
 exports.getBids = async (req, res) => {
   const { itemId } = req.params;
@@ -71,7 +69,7 @@ exports.createBid = async (req, res) => {
       // // Emit the event
       // io.emit("update", { itemId, bidAmount: bid_amount, userId: req.userId });
 
-      const notification = await Notification.create({
+      await Notification.create({
         user_id: req.userId,
         message: `A new bid of ${bid_amount} has been placed on your item ${item.name}`,
       });

@@ -27,6 +27,10 @@ const Notification = sequelize.define('Notification', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
+    is_Delete: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 });
 
 module.exports = Notification;

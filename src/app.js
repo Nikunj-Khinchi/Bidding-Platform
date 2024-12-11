@@ -10,7 +10,6 @@ const logger = require("./utils/logger");
 const app = express();
 
 app.use(logger);
-
 app.use(bodyParser.json());
 
 app.use("/users", userRoutes);
@@ -19,7 +18,6 @@ app.use("/bids", bidRoutes);
 app.use("/notifications", notificationRoutes);
 
 app.use(errorMiddleware);
-
 
 console.log(new Date());
 
